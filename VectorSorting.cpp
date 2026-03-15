@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <iostream>
 #include <time.h>
+#include <vector>
+#include <string>
 
 #include "CSVparser.hpp"
 
@@ -128,30 +130,37 @@ int partition(vector<Bid>& bids, int begin, int end) {
 
     // Calculate the middle element as middlePoint (int)
     int middlePoint = begin + (end - begin) / 2;
+
     // Set Pivot as middlePoint element title to compare (string)
     // the pivot is used to separate smaller titles from larger titles
     string pivot = bids.at(middlePoint).title;
+
     // while not done
     bool done = false;
     while (!done) {
+
         // keep incrementing low index while bids[low].title < Pivot
         // stop when a value is found that belongs on the right side
         while (bids.at(low).title < pivot) {
             ++low;
         }
+
         // keep decrementing high index while Pivot < bids[high].title
         // stop when a value is found that belongs on the left side
         while (pivot < bids.at(high).title) {
             --high;
         }
+
         /* If there are zero or one elements remaining,
             all bids are partitioned. Return high */
         if (low >= high) {
             done = true;
         } else {
+
             // swap the low and high bids
             // this moves misplaced elements to the correct side of the pivot
             swap(bids.at(low), bids.at(high));
+
             // move low and high closer ++low, --high
             ++low;
             --high;
@@ -170,22 +179,25 @@ int partition(vector<Bid>& bids, int begin, int end) {
  * @param end the ending index to sort on
  */
 void quickSort(vector<Bid>& bids, int begin, int end) {
-    //set mid equal to 0
+    // set mid equal to 0
+    int mid = 0;
 
     /* Base case: If there are 1 or zero bids to sort,
-     partition is already sorted otherwise if begin is greater
-     than or equal to end then return*/
+       this partition is already sorted, so stop recursion */
+    if (begin >= end) {
+        return;
+    }
 
     /* Partition bids into low and high such that
      midpoint is location of last element in low */
-     
+     mid = partition(bids, begin, end);
+
     // recursively sort low partition (begin to mid)
+    quickSort(bids, begin, mid);
 
     // recursively sort high partition (mid+1 to end)
-
+    quickSort(bids, mid + 1, end);
 }
-
-// FIXME (1a): Implement the selection sort logic over bid.title
 
 /**
  * Perform a selection sort on bid title
