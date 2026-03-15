@@ -209,7 +209,7 @@ void quickSort(vector<Bid>& bids, int begin, int end) {
  */
 void selectionSort(vector<Bid>& bids) {
     // min will store the index of the smallest bid found in the unsorted portion
-    int min;
+    size_t min;
 
     // determine the number of bids in the vector
     // size_t is used because it is the standard type for container sizes
@@ -254,15 +254,14 @@ double strToDouble(string str, char ch) {
  * The one and only main() method
  */
 int main(int argc, char* argv[]) {
-
     // process command line arguments
     string csvPath;
     switch (argc) {
-    case 2:
-        csvPath = argv[1];
-        break;
-    default:
-        csvPath = "eBid_Monthly_Sales.csv";
+        case 2:
+            csvPath = argv[1];
+            break;
+        default:
+            csvPath = "eBid_Monthly_Sales.csv";
     }
 
     // Define a vector to hold all the bids
@@ -284,35 +283,62 @@ int main(int argc, char* argv[]) {
 
         switch (choice) {
 
-        case 1:
-            // Initialize a timer variable before loading bids
-            ticks = clock();
+            case 1:
+                // Initialize a timer variable before loading bids
+                ticks = clock();
 
-            // Complete the method call to load the bids
-            bids = loadBids(csvPath);
+                // Complete the method call to load the bids
+                bids = loadBids(csvPath);
 
-            cout << bids.size() << " bids read" << endl;
+                cout << bids.size() << " bids read" << endl;
 
-            // Calculate elapsed time and display result
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+                // Calculate elapsed time and display result
+                ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+                cout << "time: " << ticks << " clock ticks" << endl;
+                cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
 
-            break;
+                break;
 
-        case 2:
-            // Loop and display the bids read
-            for (int i = 0; i < bids.size(); ++i) {
-                displayBid(bids[i]);
-            }
-            cout << endl;
+            case 2:
+                // Loop and display the bids read
+                for (int i = 0; i < bids.size(); ++i) {
+                    displayBid(bids[i]);
+                }
+                cout << endl;
 
-            break;
+                break;
 
-        // FIXME (1b): Invoke the selection sort and report timing results
+            case 3:
+                // Initialize a timer variable before loading bids
+                ticks = clock();
 
-        // FIXME (2b): Invoke the quick sort and report timing results
+                // Perform the selection sort
+                selectionSort(bids);
 
+                cout << bids.size() << " bids sorted " << endl;
+
+                // Calculate elapsed time and display result
+                ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+                cout << "time: " << ticks << " clock ticks" << endl;
+                cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+                break;
+
+            case 4:
+                // Initialize a timer variable before loading bids
+                ticks = clock();
+
+                // Perform the quick sort using the full range of the vector
+                quickSort(bids, 0, bids.size() - 1);
+
+                cout << bids.size() << " bids sorted " << endl;
+
+                // Calculate elapsed time and display result
+                ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+                cout << "time: " << ticks << " clock ticks" << endl;
+                cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+                break;
         }
     }
 
