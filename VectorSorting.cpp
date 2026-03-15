@@ -122,21 +122,39 @@ vector<Bid> loadBids(string csvPath) {
  */
 int partition(vector<Bid>& bids, int begin, int end) {
     //set low and high equal to begin and end
+    int low = begin;
+    int high = end;
 
     // Calculate the middle element as middlePoint (int)
-    // Set Pivot as middlePoint element title to compare (string)  
-  
-    // while not done 
-
+    int middlePoint = begin + (end - begin) / 2;
+    // Set Pivot as middlePoint element title to compare (string)
+    string pivot = bids.at(middlePoint).title;
+    // while not done
+    bool done = false;
+    while (!done) {
         // keep incrementing low index while bids[low].title < Pivot
-       
+        while (bids.at(low).title < pivot) {
+            ++low;
+        }
         // keep decrementing high index while Pivot < bids[high].title
-
+        while (pivot < bids.at(high).title) {
+            --high;
+        }
         /* If there are zero or one elements remaining,
             all bids are partitioned. Return high */
-       // else swap the low and high bids (built in vector method)
+        if (low >= high) {
+            done = true;
+        }
+        // else swap the low and high bids (built in vector method)
+        else {
+            swap(bids.at(low), bids.at(high));
             // move low and high closer ++low, --high
+            ++low;
+            --high;
+        }
+    }
     //return high;
+    return high;
 }
 
 /**
