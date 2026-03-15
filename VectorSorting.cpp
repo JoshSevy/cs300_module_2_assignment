@@ -121,22 +121,43 @@ vector<Bid> loadBids(string csvPath) {
  * @param end Ending index to partition
  */
 int partition(vector<Bid>& bids, int begin, int end) {
-    //set low and high equal to begin and end
+    // set low and high equal to begin and end
+    // these indexes move inward from both sides of the partition
+    int low = begin;
+    int high = end;
 
     // Calculate the middle element as middlePoint (int)
-    // Set Pivot as middlePoint element title to compare (string)  
-  
-    // while not done 
-
+    int middlePoint = begin + (end - begin) / 2;
+    // Set Pivot as middlePoint element title to compare (string)
+    // the pivot is used to separate smaller titles from larger titles
+    string pivot = bids.at(middlePoint).title;
+    // while not done
+    bool done = false;
+    while (!done) {
         // keep incrementing low index while bids[low].title < Pivot
-       
+        // stop when a value is found that belongs on the right side
+        while (bids.at(low).title < pivot) {
+            ++low;
+        }
         // keep decrementing high index while Pivot < bids[high].title
-
+        // stop when a value is found that belongs on the left side
+        while (pivot < bids.at(high).title) {
+            --high;
+        }
         /* If there are zero or one elements remaining,
             all bids are partitioned. Return high */
-       // else swap the low and high bids (built in vector method)
+        if (low >= high) {
+            done = true;
+        } else {
+            // swap the low and high bids
+            // this moves misplaced elements to the correct side of the pivot
+            swap(bids.at(low), bids.at(high));
             // move low and high closer ++low, --high
-    //return high;
+            ++low;
+            --high;
+        }
+    }
+    return high;
 }
 
 /**
@@ -201,6 +222,7 @@ void selectionSort(vector<Bid>& bids) {
         if (min != pos) {
             swap(bids.at(pos), bids.at(min));
         }
+    }
 }
 
 /**
